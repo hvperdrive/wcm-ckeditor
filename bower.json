@@ -1,0 +1,16 @@
+{
+  "name": "WCM_ckeditor",
+  "homepage": "https://github.com/JvJefke/WCM_ckeditor",
+  "authors": [
+    "Jeroen Valcke <valcke_jeroen@hotmail.com>"
+  ],
+  "description": "ckeditor for WCM project",
+  "main": "ckeditor.js",
+  "moduleType": [],
+  "keywords": [
+    "ckeditor",
+    "wcm"
+  ],
+  "license": "MIT",
+  "private": true
+}
