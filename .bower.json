@@ -1,0 +1,25 @@
+{
+  "name": "WCM_ckeditor",
+  "homepage": "https://github.com/JvJefke/WCM_ckeditor",
+  "authors": [
+    "Jeroen Valcke <valcke_jeroen@hotmail.com>"
+  ],
+  "description": "ckeditor for WCM project",
+  "main": "ckeditor.js",
+  "moduleType": [],
+  "keywords": [
+    "ckeditor",
+    "wcm"
+  ],
+  "license": "MIT",
+  "private": true,
+  "_release": "2b252db788",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2b252db78828efc368981e14d823cda78b3384c2"
+  },
+  "_source": "https://github.com/JvJefke/WCM_ckeditor.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/JvJefke/WCM_ckeditor.git"
+}
