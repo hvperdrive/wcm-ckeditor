@@ -95,6 +95,7 @@ var CKBUILDER_CONFIG = {
 		'tabletools' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
+		'widget': 1,
 		'wordcount' : 1,
 		'wsc' : 1,
 		'wysiwygarea' : 1
