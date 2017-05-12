@@ -133,3 +133,20 @@ a > img {
 	border: none;
 	outline: 1px solid #0782C1;
 }
+
+.wcm-slider__images {
+    margin-bottom: 1rem;
+    padding: .75rem;
+    border: 1px solid rgb(233, 233, 233);
+    border-radius: .5rem;
+    min-height: 10rem;
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+}
+
+.wcm-slider__images img {
+    height: 10rem;
+    width: 10rem;
+    margin-right: 1.5rem;
+}
