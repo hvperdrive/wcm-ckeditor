@@ -1,0 +1,24 @@
+{
+  "name": "wcm_ckeditor",
+  "version": "1.0.0",
+  "description": "CKEditor 4 ==========",
+  "main": "config.js",
+  "scripts": {
+    "sass": "node-sass ./skins/bootstrapck/scss -o ./skins/bootstrapck",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peacatshoe/WCM_ckeditor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peacatshoe/WCM_ckeditor/issues"
+  },
+  "homepage": "https://github.com/peacatshoe/WCM_ckeditor#readme",
+  "devDependencies": {
+    "node-sass": "^4.5.2",
+    "stylelint": "^7.10.1"
+  }
+}
