@@ -4,7 +4,9 @@
   "description": "CKEditor 4 ==========",
   "main": "config.js",
   "scripts": {
-    "sass": "node-sass ./skins/bootstrapck/scss -o ./skins/bootstrapck",
+    "sass": "npm-run-all -p sass:components sass:dialog",
+    "sass:components": "node-sass ./skins/bootstrapck/scss/components -o ./skins/bootstrapck --output-style compressed",
+    "sass:dialog": "node-sass ./skins/bootstrapck/scss/dialog -o ./skins/bootstrapck --output-style compressed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
