@@ -62,13 +62,12 @@
       }
 
       // Widget with an dragresize attribute = "true" => search for image and handle it like a normal image
-      if (startEl && startEl.hasClass("cke_widget_wrapper") && startEl.getAttribute("dragresize") === "true") {
-        image = startEl.$.querySelector("img");
+      if (startEl && startEl.hasClass('cke_widget_wrapper') && startEl.getAttribute('dragresize') === 'true') {
+        image = startEl.$.querySelector('img');
       }
 
-      // If an element is selected and that element is an IMG
+      // Check if the image is of tag image
       if (startEl.is('img')) {
-        // And we're not right or middle clicking on the image
         image = selection.getStartElement().$;
       }
 
