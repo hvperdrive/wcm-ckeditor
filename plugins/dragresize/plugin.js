@@ -6,7 +6,7 @@
  * - Escape while dragging cancels resize
  *
  */
-(function() {
+(function () {
   "use strict";
 
   var PLUGIN_NAME = 'dragresize';
@@ -18,19 +18,19 @@
    * Initializes the plugin
    */
   CKEDITOR.plugins.add(PLUGIN_NAME, {
-    onLoad: function() {
+    onLoad: function () {
       if (!isWebkit) {
         return;
       }
       // CSS is added in a compressed form
       CKEDITOR.addCss('img::selection{color:rgba(0,0,0,0)}img.ckimgrsz{outline:1px dashed #000}#ckimgrsz{position:absolute;width:0;height:0;cursor:default;z-index:10001}#ckimgrsz span{display:none;position:absolute;top:0;left:0;width:0;height:0;background-size:100% 100%;opacity:.65;outline:1px dashed #000}#ckimgrsz i{position:absolute;display:block;width:5px;height:5px;background:#fff;border:1px solid #000}#ckimgrsz i.active,#ckimgrsz i:hover{background:#000}#ckimgrsz i.br,#ckimgrsz i.tl{cursor:nwse-resize}#ckimgrsz i.bm,#ckimgrsz i.tm{cursor:ns-resize}#ckimgrsz i.bl,#ckimgrsz i.tr{cursor:nesw-resize}#ckimgrsz i.lm,#ckimgrsz i.rm{cursor:ew-resize}body.dragging-br,body.dragging-br *,body.dragging-tl,body.dragging-tl *{cursor:nwse-resize!important}body.dragging-bm,body.dragging-bm *,body.dragging-tm,body.dragging-tm *{cursor:ns-resize!important}body.dragging-bl,body.dragging-bl *,body.dragging-tr,body.dragging-tr *{cursor:nesw-resize!important}body.dragging-lm,body.dragging-lm *,body.dragging-rm,body.dragging-rm *{cursor:ew-resize!important}');
     },
-    init: function(editor) {
+    init: function (editor) {
       if (!isWebkit) {
         return;
       }
       //onDomReady handler
-      editor.on('contentDom', function(evt) {
+      editor.on('contentDom', function (evt) {
         init(editor);
       });
     }
@@ -40,9 +40,9 @@
     var window = editor.window.$, document = editor.document.$;
     var snapToSize = (typeof IMAGE_SNAP_TO_SIZE === 'undefined') ? null : IMAGE_SNAP_TO_SIZE;
 
-    var resizer = new Resizer(editor, {snapToSize: snapToSize});
+    var resizer = new Resizer(editor, { snapToSize: snapToSize });
 
-    document.addEventListener('mousedown', function(e) {
+    document.addEventListener('mousedown', function (e) {
       if (resizer.isHandle(e.target)) {
         resizer.initDrag(e);
       }
@@ -51,12 +51,28 @@
     function selectionChange() {
       var selection = editor.getSelection();
       if (!selection) return;
-      // If an element is selected and that element is an IMG
-      if (selection.getType() !== CKEDITOR.SELECTION_NONE && selection.getStartElement().is('img')) {
-        // And we're not right or middle clicking on the image
-        if (!window.event || !window.event.button || window.event.button === 0) {
-          resizer.show(selection.getStartElement().$);
-        }
+
+      // Get selected element
+      var startEl = selection.getStartElement();
+      var image = null;
+
+      // Hide resizer when there is no startEl or when the selection is done by right or middle clicking on the image
+      if (!startEl || selection.getType() === CKEDITOR.SELECTION_NONE || (window.event && window.event.button && window.event.button !== 0)) {
+        return resizer.hide();
+      }
+
+      // Widget with an dragresize attribute = "true" => search for image and handle it like a normal image
+      if (startEl && startEl.hasClass('cke_widget_wrapper') && startEl.getAttribute('dragresize') === 'true') {
+        image = startEl.$.querySelector('img');
+      }
+
+      // Check if the image is of tag image
+      if (startEl.is('img')) {
+        image = selection.getStartElement().$;
+      }
+
+      if (image) {
+        resizer.show(image);
       } else {
         resizer.hide();
       }
@@ -64,24 +80,24 @@
 
     editor.on('selectionChange', selectionChange);
 
-    editor.on('getData', function(e) {
+    editor.on('getData', function (e) {
       var html = e.data.dataValue || '';
       html = html.replace(/<div id="ckimgrsz"([\s\S]*?)<\/div>/i, '');
       html = html.replace(/\b(ckimgrsz)\b/g, '');
       e.data.dataValue = html;
     });
 
-    editor.on('beforeUndoImage', function() {
+    editor.on('beforeUndoImage', function () {
       // Remove the handles before undo images are saved
       resizer.hide();
     });
 
-    editor.on('afterUndoImage', function() {
+    editor.on('afterUndoImage', function () {
       // Restore the handles after undo images are saved
       selectionChange();
     });
 
-    editor.on('blur', function() {
+    editor.on('blur', function () {
       // Remove the handles when editor loses focus
       resizer.hide();
     });
@@ -93,7 +109,7 @@
 
     // Update the selection when the browser window is resized
     var resizeTimeout;
-    editor.window.on('resize', function() {
+    editor.window.on('resize', function () {
       // Cancel any resize waiting to happen
       clearTimeout(resizeTimeout);
       // Delay resize to "debounce"
@@ -110,7 +126,7 @@
   }
 
   Resizer.prototype = {
-    init: function() {
+    init: function () {
       var container = this.container = this.document.createElement('div');
       container.id = 'ckimgrsz';
       this.preview = this.document.createElement('span');
@@ -129,19 +145,19 @@
         container.appendChild(handles[n]);
       }
     },
-    createHandle: function(name) {
+    createHandle: function (name) {
       var el = this.document.createElement('i');
       el.classList.add(name);
       return el;
     },
-    isHandle: function(el) {
+    isHandle: function (el) {
       var handles = this.handles;
       for (var n in handles) {
         if (handles[n] === el) return true;
       }
       return false;
     },
-    show: function(el) {
+    show: function (el) {
       this.el = el;
       if (this.cfg.snapToSize) {
         this.otherImages = toArray(this.document.getElementsByTagName('img'));
@@ -153,7 +169,7 @@
       this.el.classList.add('ckimgrsz');
       this.showHandles();
     },
-    hide: function() {
+    hide: function () {
       // Remove class from all img.ckimgrsz
       var elements = this.document.getElementsByClassName('ckimgrsz');
       for (var i = 0; i < elements.length; ++i) {
@@ -164,25 +180,25 @@
         this.container.parentNode.removeChild(this.container);
       }
     },
-    initDrag: function(e) {
+    initDrag: function (e) {
       if (e.button !== 0) {
         //right-click or middle-click
         return;
       }
       var resizer = this;
       var drag = new DragEvent(this.window, this.document);
-      drag.onStart = function() {
+      drag.onStart = function () {
         resizer.showPreview();
         resizer.isDragging = true;
         resizer.editor.getSelection().lock();
       };
-      drag.onDrag = function() {
+      drag.onDrag = function () {
         resizer.calculateSize(this);
         resizer.updatePreview();
         var box = resizer.previewBox;
         resizer.updateHandles(box, box.left, box.top);
       };
-      drag.onRelease = function() {
+      drag.onRelease = function () {
         resizer.isDragging = false;
         resizer.hidePreview();
         resizer.hide();
@@ -190,14 +206,14 @@
         // Save an undo snapshot before the image is permanently changed
         resizer.editor.fire('saveSnapshot');
       };
-      drag.onComplete = function() {
+      drag.onComplete = function () {
         resizer.resizeComplete();
         // Save another snapshot after the image is changed
         resizer.editor.fire('saveSnapshot');
       };
       drag.start(e);
     },
-    updateHandles: function(box, left, top) {
+    updateHandles: function (box, left, top) {
       left = left || 0;
       top = top || 0;
       var handles = this.handles;
@@ -210,37 +226,37 @@
       positionElement(handles.bm, Math.round(box.width / 2) - 3 + left, box.height - 4 + top);
       positionElement(handles.br, box.width - 4 + left, box.height - 4 + top);
     },
-    showHandles: function() {
+    showHandles: function () {
       var handles = this.handles;
       this.updateHandles(this.box);
       for (var n in handles) {
         handles[n].style.display = 'block';
       }
     },
-    hideHandles: function() {
+    hideHandles: function () {
       var handles = this.handles;
       for (var n in handles) {
         handles[n].style.display = 'none';
       }
     },
-    showPreview: function() {
+    showPreview: function () {
       this.preview.style.backgroundImage = 'url("' + this.el.src + '")';
       this.calculateSize();
       this.updatePreview();
       this.preview.style.display = 'block';
     },
-    updatePreview: function() {
+    updatePreview: function () {
       var box = this.previewBox;
       positionElement(this.preview, box.left, box.top);
       resizeElement(this.preview, box.width, box.height);
     },
-    hidePreview: function() {
+    hidePreview: function () {
       var box = getBoundingBox(this.window, this.preview);
-      this.result = {width: box.width, height: box.height};
+      this.result = { width: box.width, height: box.height };
       this.preview.style.display = 'none';
     },
-    calculateSize: function(data) {
-      var box = this.previewBox = {top: 0, left: 0, width: this.box.width, height: this.box.height};
+    calculateSize: function (data) {
+      var box = this.previewBox = { top: 0, left: 0, width: this.box.width, height: this.box.height };
       if (!data) return;
       var attr = data.target.className;
       if (~attr.indexOf('r')) {
@@ -284,7 +300,7 @@
         box.top = this.box.height - box.height;
       }
     },
-    resizeComplete: function() {
+    resizeComplete: function () {
       resizeElement(this.el, this.result.width, this.result.height);
     }
   };
@@ -300,12 +316,12 @@
   }
 
   DragEvent.prototype = {
-    start: function(e) {
+    start: function (e) {
       e.preventDefault();
       e.stopPropagation();
       this.target = e.target;
       this.attr = e.target.className;
-      this.startPos = {x: e.clientX, y: e.clientY};
+      this.startPos = { x: e.clientX, y: e.clientY };
       this.update(e);
       var events = this.events;
       this.document.addEventListener('mousemove', events.mousemove, false);
@@ -314,12 +330,12 @@
       this.document.body.classList.add('dragging-' + this.attr);
       this.onStart && this.onStart();
     },
-    update: function(e) {
-      this.currentPos = {x: e.clientX, y: e.clientY};
-      this.delta = {x: e.clientX - this.startPos.x, y: e.clientY - this.startPos.y};
-      this.keys = {shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey};
+    update: function (e) {
+      this.currentPos = { x: e.clientX, y: e.clientY };
+      this.delta = { x: e.clientX - this.startPos.x, y: e.clientY - this.startPos.y };
+      this.keys = { shift: e.shiftKey, ctrl: e.ctrlKey, alt: e.altKey };
     },
-    mousemove: function(e) {
+    mousemove: function (e) {
       this.update(e);
       this.onDrag && this.onDrag();
       if (e.which === 0) {
@@ -327,18 +343,18 @@
         this.mouseup(e);
       }
     },
-    keydown: function(e) {
+    keydown: function (e) {
       //escape key cancels dragging
       if (e.keyCode === 27) {
         this.release();
       }
     },
-    mouseup: function(e) {
+    mouseup: function (e) {
       this.update(e);
       this.release();
       this.onComplete && this.onComplete();
     },
-    release: function() {
+    release: function () {
       this.document.body.classList.remove('dragging-' + this.attr);
       var events = this.events;
       this.document.removeEventListener('mousemove', events.mousemove, false);
@@ -361,7 +377,7 @@
     if (fn.bind) {
       return fn.bind(ctx);
     }
-    return function() {
+    return function () {
       fn.apply(ctx, arguments);
     };
   }
