@@ -53,6 +53,7 @@ var CKBUILDER_CONFIG = {
 	plugins : {
 		'a11yhelp' : 1,
 		'about' : 1,
+		'autogrow': 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,
@@ -78,6 +79,7 @@ var CKBUILDER_CONFIG = {
 		'htmlwriter' : 1,
 		'iframe' : 1,
 		'image' : 1,
+		'imagepaste': 1,
 		'imageresize' : 1,
 		'indentblock' : 1,
 		'indentlist' : 1,
@@ -118,7 +120,7 @@ var CKBUILDER_CONFIG = {
 		'uploadimage' : 1,
 		'wordcount' : 1,
 		'wsc' : 1,
-		'wysiwygarea' : 1
+		'wysiwygarea' : 1,
 	},
 	languages : {
 		'af' : 1,
