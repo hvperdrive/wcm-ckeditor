@@ -27,19 +27,11 @@
       var actualStartContainer = range.startContainer;
 
       var hasFoundBlock = false;
-      if (
-        actualStartContainer.$.nodeType === 1 &&
-        getComputedStyle(actualStartContainer.$, null).display == "block"
-      ) {
+      if (actualStartContainer.$.nodeType === 1 && getComputedStyle(actualStartContainer.$, null).display == "block") {
         hasFoundBlock = true;
       }
 
-      while (
-        !hasFoundBlock &&
-        actualStartContainer.getParent() &&
-        getComputedStyle(actualStartContainer.getParent().$, null).display ==
-          "block"
-      ) {
+      while (!hasFoundBlock && actualStartContainer.getParent() && getComputedStyle(actualStartContainer.getParent().$, null).display == "block") {
         hasFoundBlock = true;
         actualStartContainer = actualStartContainer.getParent();
       }
