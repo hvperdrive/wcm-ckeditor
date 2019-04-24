@@ -20,24 +20,26 @@
   });
 
   function handleMouseup(editor, event) {
-    if (event.data.$.detail >= 3) {
-      var selection = editor.getSelection();
-      var range = selection.getRanges()[0];
-      var actualStartContainer = range.startContainer;
-
-      var hasFoundBlock = false;
-      if (actualStartContainer.$.nodeType === 1 && getComputedStyle(actualStartContainer.$, null).display == "block") {
-        hasFoundBlock = true;
-      }
-
-      while (!hasFoundBlock && actualStartContainer.getParent() && getComputedStyle(actualStartContainer.getParent().$, null).display == "block") {
-        hasFoundBlock = true;
-        actualStartContainer = actualStartContainer.getParent();
-      }
-
-      range.selectNodeContents(actualStartContainer);
-      selection.selectRanges([range]);
+    if (event.data.$.detail < 3) {
+      return;
     }
+
+    var selection = editor.getSelection();
+    var range = selection.getRanges()[0];
+    var actualStartContainer = range.startContainer;
+
+    var hasFoundBlock = false;
+    if (actualStartContainer.$.nodeType === 1 && getComputedStyle(actualStartContainer.$, null).display == "block") {
+      hasFoundBlock = true;
+    }
+
+    while (!hasFoundBlock && actualStartContainer.getParent() && getComputedStyle(actualStartContainer.getParent().$, null).display == "block") {
+      hasFoundBlock = true;
+      actualStartContainer = actualStartContainer.getParent();
+    }
+
+    range.selectNodeContents(actualStartContainer);
+    selection.selectRanges([range]);
   }
 
   function init(editor) {
