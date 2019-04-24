@@ -1,6 +1,7 @@
 /**
  * CKEditor plugin: Chrome helper
  * - Fixes the triple click bug in chrome
+ *
  */
 (function() {
   "use strict";
@@ -26,6 +27,13 @@
       var actualStartContainer = range.startContainer;
 
       var hasFoundBlock = false;
+      if (
+        actualStartContainer.$.nodeType === 1 &&
+        getComputedStyle(actualStartContainer.$, null).display == "block"
+      ) {
+        hasFoundBlock = true;
+      }
+
       while (
         !hasFoundBlock &&
         actualStartContainer.getParent() &&
