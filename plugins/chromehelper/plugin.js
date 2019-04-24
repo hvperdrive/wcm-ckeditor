@@ -22,7 +22,6 @@
   function handleMouseup(editor, event) {
     if (event.data.$.detail >= 3) {
       var selection = editor.getSelection();
-      console.log(selection);
       var range = selection.getRanges()[0];
       var actualStartContainer = range.startContainer;
 
